@@ -1,0 +1,20 @@
+import random
+import datetime
+
+name = input("Hey! Let's get Started by knowing your name? ")
+greetings = ["Hello", "Hi", "Hola", "How are you", "Good Day", "Hey", "Nice to meet you"]
+i = random.randint(0, len(greetings)-1)
+t = datetime.datetime.now().hour
+
+
+if t <= 9:
+    print("Good Morning" + " " + name + "!")
+elif t > 21:
+    print("Good Night" + " " + name + "!")
+elif t < 21 and t > 18:
+    print("Good Evening" + " " + name + "!")
+else:
+    print(greetings[i] + " " + name + "!")
+
+ans = input()
+greetings.append(ans)
