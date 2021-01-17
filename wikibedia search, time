@@ -1,0 +1,18 @@
+import datetime
+import wikipedia
+
+
+def run_bot():
+    command = take_command()
+    print(command)
+
+    if 'time' in command:
+        time = datetime.datetime.now().strftime('%I:%M %p')
+         recordAudio('Current time is ' + time)
+    elif ' ' in command:
+        person = command.replace('')
+        info = wikipedia.summary(person, 1)
+        print(info)
+        recordAudio(info)
+        
+       
