@@ -1,7 +1,5 @@
 import nltk
 #nltk.download('all')
-from nltk.stem.lancaster import LancasterStemmer
-stemmer = LancasterStemmer()
 
 import numpy
 import tflearn
@@ -9,11 +7,16 @@ import tensorflow as tf
 import random
 import json
 import pickle
+import os
+
+from nltk.stem.lancaster import LancasterStemmer
+stemmer = LancasterStemmer()
 
 with open("intentions.json") as file:
 	data = json.load(file)
 
 try:
+	x
 	with open("data.pickle", "rb") as f:
 		words, labels, training, output = pickle.load(f)
 except:
@@ -75,9 +78,10 @@ except:
 		pickle.dump((words, labels, training, output), f)
 
 #Training the model
-tf.reset_default_graph()
+tf.compat.v1.reset_default_graph()
 
 net = tflearn.input_data(shape=[None, len(training[0])])
+net = tflearn.fully_connected(net, 8)
 net = tflearn.fully_connected(net, 8)
 net = tflearn.fully_connected(net, 8)
 net = tflearn.fully_connected(net, len(output[0]), activation="softmax")
@@ -85,10 +89,10 @@ net = tflearn.regression(net)
 
 model = tflearn.DNN(net)
 
-try: 
+if os.path.exists("model.tflearn"):
 	model.load("model.tflearn")
-except:
-	model.fit(training, output, n_epoch=1000, batch_size=8, show_metric=True)
+else:
+	model.fit(training, output, n_epoch=3000, batch_size=8, show_metric=True)
 	model.save("model.tflearn")
 
 
