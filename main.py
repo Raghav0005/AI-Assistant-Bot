@@ -9,6 +9,9 @@ import random
 import json
 import pickle
 import os
+import datetime
+import wikipedia
+
 
 from nltk.stem.lancaster import LancasterStemmer
 stemmer = LancasterStemmer()
@@ -97,7 +100,7 @@ model = tflearn.DNN(net)
 if os.path.exists("model.tflearn"):
 	model.load("model.tflearn")
 else:
-	model.fit(training, output, n_epoch=3000, batch_size=8, show_metric=True)
+	model.fit(training, output, n_epoch=1000, batch_size=8, show_metric=True)
 	model.save("model.tflearn")
 
 
@@ -130,7 +133,7 @@ def recordAudio():
         
     except sr.UnknownValueError:
         print ('Google speech recognition did not understand tha audio')
-    except sr. requestError as e:
+    except sr.requestError as e:
         print ('Request error results from google speech service' +e)
         
     return data 
@@ -150,6 +153,14 @@ def chat():
 		for tg in data["intents"]:
 			if tg["tag"] == tag:
 				responses = tg["responses"]
+			elif 'time' in data:
+				time = datetime.datetime.now().strftime('%I:%M %p')
+				recordAudio('Current time is ' + time)
+			elif ' ' in data:
+				search_word = data.replace('')
+				info = wikipedia.summary(search_word, 1)
+				print(info)
+				recordAudio(info)
 
 		print(random.choice(responses))
 
