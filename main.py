@@ -1,6 +1,7 @@
 import nltk
 #nltk.download('all')
-
+import speech_recognition as sr
+import warnings
 import numpy
 import tflearn
 import tensorflow as tf
@@ -12,11 +13,15 @@ import os
 from nltk.stem.lancaster import LancasterStemmer
 stemmer = LancasterStemmer()
 
+
+#ignore any warning messages
+warnings.filterwarnings('ignore')
+
+#Teaching the bot 
 with open("intentions.json") as file:
 	data = json.load(file)
 
 try:
-	x
 	with open("data.pickle", "rb") as f:
 		words, labels, training, output = pickle.load(f)
 except:
@@ -109,10 +114,32 @@ def bag_of_words(s, words):
 
 	return numpy.array(bag)
 
+#record audio and return it as a string 
+def recordAudio():
+    #record the audio
+    r = sr. Recognizer() #creating recognizer object
+    
+    #open the mic
+    with sr. Microphone() as source:
+        audio = r.listen (source)
+        
+        
+    #use googles speech recognition 
+    try:
+        data = r. recognize_google(audio)
+        
+    except sr.UnknownValueError:
+        print ('Google speech recognition did not understand tha audio')
+    except sr. requestError as e:
+        print ('Request error results from google speech service' +e)
+        
+    return data 
+
 def chat():
-	print("Start talking with the bot! (Type quit to stop)")
+	print("Start talking with the bot! (Say quit to stop)")
 	while True:
-		inp = input("You: ")
+		inp = recordAudio()
+		print("You: " + inp)
 		if inp.lower() == "quit":
 			break
 
