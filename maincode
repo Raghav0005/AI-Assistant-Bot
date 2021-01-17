@@ -1,12 +1,5 @@
 import speech_recognition as sr
-import os
-from gtts import gTTS
-import datetime
 import warnings
-import calender
-import random
-import wikipedia
-
 
 #ignore any warning messages
 warnings.filterwarnings('ignore')
@@ -19,7 +12,6 @@ def recordAudio():
     
     #open the mic
     with sr. Microphone() as source:
-        print('say something')
         audio = r.listen (source)
         
         
@@ -35,12 +27,3 @@ def recordAudio():
         
     return data 
 
-while true:
-    weather = false
-    calendar = false
-    search = false
-    speech = recordAudio().split()
-    
-    for i in speech:
-        if speech[i] = "weather" or "temperature":
-            weather = true;
